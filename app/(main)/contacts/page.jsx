@@ -19,19 +19,16 @@ export default function ContactsPage() {
 
   const { data, isLoading } = useConvexQuery(api.contacts.getAllContacts);
 
-  // Check for the createGroup parameter when the component mounts
+  // Open modal from URL param
   useEffect(() => {
     const createGroupParam = searchParams.get("createGroup");
 
     if (createGroupParam === "true") {
-      // Open the modal
       setIsCreateGroupModalOpen(true);
 
-      // Remove the parameter from the URL
+      // Clean up URL
       const url = new URL(window.location.href);
       url.searchParams.delete("createGroup");
-
-      // Replace the current URL without the parameter
       router.replace(url.pathname + url.search);
     }
   }, [searchParams, router]);
@@ -47,10 +44,13 @@ export default function ContactsPage() {
   const { users, groups } = data || { users: [], groups: [] };
 
   return (
-    <div className="container mx-auto pt-24 pb-6 py-6 py-6 px-4">
+    <div className="container mx-auto pt-24 pb-6 px-4">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between mb-6">
         <h1 className="text-5xl gradient-title">Contacts</h1>
-        <Button className="bg-violet-700 hover:bg-violet-600"onClick={() => setIsCreateGroupModalOpen(true)}>
+        <Button
+          className="bg-violet-700 hover:bg-violet-600"
+          onClick={() => setIsCreateGroupModalOpen(true)}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Create Group
         </Button>
